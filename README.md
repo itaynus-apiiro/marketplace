@@ -780,6 +780,32 @@ Most commands support:
 
 ## Privacy & Telemetry
 
+This section describes privacy and data handling for the Apiiro CLI and the Apiiro plugins used with ChatGPT, Codex, and Claude. The hosted MCP connection and the local CLI are different ways to access Apiiro. Optional CLI telemetry and prevention-hook reporting are described separately below.
+
+### Hosted MCP plugin: data processed and purpose
+
+When you use the hosted Apiiro connection, the AI host sends the arguments of the requested tool call to Apiiro. Depending on the task, these can include a security question or coding-task description; repository URLs, names, or keys; risk identifiers; design text for threat modeling; package names, versions, or CVE identifiers; and file paths and source-code contents that you submit for scanning.
+
+Apiiro processes these inputs to perform the requested security query, inventory lookup, security-requirements enrichment, threat model, scan, or remediation workflow. Responses can include repository and application inventory, vulnerability and risk details, affected files or dependencies, security recommendations, and scan or remediation results. Tool responses are returned to the AI host for use in your conversation. Some actions, such as starting a scan or Autofix job, create records in your Apiiro tenant.
+
+The hosted connection uses your Apiiro account and the access available to that account. Signing in does not grant access to repositories or findings outside your Apiiro role. Complete authentication through the host's connection and Apiiro sign-in screens; do not paste passwords, tokens, API keys, or other sign-in secrets into chat.
+
+### Sharing and model training
+
+The requests and results needed to use the integration pass between Apiiro and the AI host you choose. Apiiro does not otherwise share customer prompts, submitted code, or tool results with third parties, and does not use those inputs or outputs to train models.
+
+The AI host separately processes the conversation, tool arguments, and returned results under the terms, privacy policies, and account or workspace settings applicable to that host. Apiiro's statement about its own data use does not override the host's policies or settings. Review those settings before submitting confidential information.
+
+### Retention, deletion, and user controls
+
+Apiiro manages retention and deletion of customer prompts, submitted code, tool results, and operational logs according to customer requests. Contact your organization's Apiiro administrator or [Apiiro support](https://support.apiiro.com) to confirm the retention arrangements that apply to your tenant or to request deletion.
+
+You can disconnect the hosted Apiiro integration through your AI host's connection settings to stop future tool requests from that connection. Disconnecting does not itself delete past conversations in the AI host or existing records in Apiiro. Requests concerning host-stored conversations must be handled through that host's controls; requests concerning Apiiro-stored data should go through your organization's administrator or Apiiro support.
+
+Only submit code and repository data you are authorized to process. Do not include unrelated personal information or credentials in prompts or scan inputs. CLI analytics opt-out settings affect the optional analytics described below; they do not prevent data transmission required to execute a requested security tool or the tenant security reports described below.
+
+### Local CLI analytics and prevention-hook reporting
+
 The CLI may send anonymous usage analytics (command name, success/failure, duration, OS, CLI version, client surface, and tenant id from your access token) to help Apiiro understand which features are used. It also records when a pre-commit scan is bypassed with `git commit --no-verify`, together with the coding-agent surface the bypass came from. Analytics never collect source code, repository URLs, file paths, finding details, email addresses, or tokens.
 
 The first time analytics would be recorded in an interactive terminal, the CLI prints a one-time notice on stderr. Telemetry is disabled automatically in CI environments, and you can opt out at any time with `APIIRO_TELEMETRY=0` or the standard `DO_NOT_TRACK=1`.
