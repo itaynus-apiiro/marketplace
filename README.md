@@ -175,6 +175,40 @@ and Jamf deployments should continue using `apiiro init --non-interactive`.
 
 Available skills: `guardian-risks`, `guardian-fix`, `guardian-inventory`, `guardian-api`, `guardian-query`, `guardian-threat-model`, `guardian-scan`, `guardian-secure-prompt`, `guardian-setup`.
 
+### Hosted MCP server
+
+Apiiro Guardian is also available as a hosted MCP server at `https://mcp.apiiro.com/mcp`. It needs no local install: the server uses OAuth, so your MCP client opens the Apiiro sign-in page the first time it connects, and the tools only see what your Apiiro account can access. Never put an API key or token in the MCP configuration.
+
+**Kiro**: one-click install:
+
+[![Add to Kiro](https://kiro.dev/images/add-to-kiro.svg)](https://kiro.dev/launch/mcp/add?name=apiiro&config=%7B%22url%22%3A%22https%3A%2F%2Fmcp.apiiro.com%2Fmcp%22%2C%22disabled%22%3Afalse%2C%22autoApprove%22%3A%5B%5D%7D)
+
+Or add it to `.kiro/settings/mcp.json` (workspace) or `~/.kiro/settings/mcp.json` (user):
+
+```json
+{
+  "mcpServers": {
+    "apiiro": {
+      "url": "https://mcp.apiiro.com/mcp",
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}
+```
+
+**Gemini CLI**: this repository is a Gemini CLI extension (`gemini-extension.json`), which adds the MCP server and a short `GEMINI.md` context file:
+
+```bash
+gemini extensions install https://github.com/apiiro/marketplace
+```
+
+Inside Gemini CLI, run `/mcp auth apiiro` if you need to sign in again.
+
+**Other MCP clients**: use the server URL with the streamable HTTP transport, for example `{"mcpServers": {"apiiro": {"url": "https://mcp.apiiro.com/mcp"}}}`.
+
+Privacy Policy: [apiiro.com/privacy-policy](https://apiiro.com/privacy-policy/). Support: [support.apiiro.com](https://support.apiiro.com) (see [Support](#support)).
+
 ## Authentication
 
 ```bash
@@ -810,6 +844,8 @@ Likewise, a bypassed pre-commit scan is also reported to **your own Apiiro tenan
 
 The prompt hook's local log of enriched prompts (see [Hooks](#hooks)) stays on your machine and is never sent to Apiiro or included in analytics.
 
+For how Apiiro handles personal data, see the [Apiiro Privacy Policy](https://apiiro.com/privacy-policy/).
+
 ## Troubleshooting
 
 - **TLS / HTTPS errors** (corporate TLS inspection) — Point `NODE_EXTRA_CA_CERTS` at a PEM file from your IT team and retry.
@@ -818,11 +854,11 @@ The prompt hook's local log of enriched prompts (see [Hooks](#hooks)) stays on y
 
 ## Support
 
-For help with the Apiiro CLI or the Apiiro plugin for ChatGPT and Codex, submit a ticket at [support.apiiro.com](https://support.apiiro.com) or from your Apiiro tenant.
+For help with the Apiiro CLI, the Apiiro plugin for ChatGPT and Codex, or the hosted Apiiro MCP server (including in Kiro and Gemini CLI), submit a ticket at [support.apiiro.com](https://support.apiiro.com) or from your Apiiro tenant.
 
 Please include:
 
-- The host you are using (ChatGPT, Codex CLI, Codex app, or Codex IDE extension)
+- The host you are using (for example ChatGPT, Codex CLI, Codex app, Codex IDE extension, Kiro, or Gemini CLI)
 - The plugin version, or the CLI version from `apiiro --version`
 - A short description of the issue and the steps to reproduce it
 - Any error message, with credentials, tokens, and other sensitive values removed
